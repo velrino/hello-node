@@ -1,17 +1,41 @@
 var http = require('http');
 
-var server = http.createServer(
-  function(req, res)
-  {
-    var route = req.url;
+class Render
+{
+ constructor( res )
+ {
+   this.res = res ;
+ }
+ default(){
+    return this.res.end("<html><body>Portal de Noticias </body></html>");
+ }
+ economic()
+ {
+    return this.res.end("<html><body>Portal de Noticias sobre Economia</body></html>");
+ }
+ tech()
+ {
+    return this.res.end("<html><body>Portal de Noticias sobre Tecnologia</body></html>");
+ }
+}
 
-    if (route == '/tech')
-      return res.end("<html><body>Portal de Noticias sobre Tecnologia</body></html>");
-    else if (route == '/economic')
-      return res.end("<html><body>Portal de Noticias sobre Economia</body></html>");
-    else
-      return res.end("<html><body>Portal de Noticias </body></html>");
-  }
-);
+return server();
 
-server.listen(4000);
+function server()
+{
+  var server = http.createServer(
+    function(req, res)
+    {
+      var route = req.url;
+      var render = new Render( res );
+
+      if (route == '/tech')
+        return render.tech( );
+      else if (route == '/economic')
+        return render.economic( );
+      else
+        return render.default( );
+    }
+  );
+  return server.listen(4000);
+}
